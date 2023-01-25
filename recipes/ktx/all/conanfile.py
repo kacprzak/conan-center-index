@@ -10,7 +10,7 @@ class KtxConan(ConanFile):
     license = "Apache-2.0"
     topics = ("ktx", "texture", "khronos")
     homepage = "https://github.com/KhronosGroup/KTX-Software"
-    url = "https://github.com/conan-io/conan-center-index"
+    url = "https://github.com/kacprzak/conan-center-index"
 
     settings = "os", "arch", "compiler", "build_type"
     options = {
