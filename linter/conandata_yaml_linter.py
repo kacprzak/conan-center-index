@@ -62,6 +62,14 @@ def main():
     if "patches" in parsed:
         for version in parsed["patches"]:
             patches = parsed["patches"][version]
+            if version not in parsed["sources"]:
+                print(
+                    f"::warning file={args.path},line={patches.start_line},endline={patches.end_line},"
+                    f"title=conandata.yml inconsistency"
+                    f"::Patch(es) are listed for version `{version}`, but there is source for this version."
+                    f" You should either remove `{version}` from the `patches` section, or add it to the"
+                    f" `sources` section"
+                )
             for i, patch in enumerate(patches):
                 # Individual report errors for each patch object
                 try:
@@ -82,17 +90,6 @@ def main():
                         f"::'patch_type' should have 'patch_source' as per {CONANDATA_YAML_URL}#patch_type"
                         " it is expected to have a source (e.g. a URL) to where it originates from to help with"
                         " reviewing and consumers to evaluate patches"
-                    )
-
-                # v2 migrations suggestion
-                if "base_path" in parsed["patches"][version][i]:
-                    base_path = parsed["patches"][version][i]["base_path"]
-                    print(
-                        f"::notice file={args.path},line={base_path.start_line},endline={base_path.end_line},"
-                        f"title=conandata.yml v2 migration suggestion"
-                        "::'base_path' should not be required once a recipe has been upgraded to take advantage of"
-                        " layouts (see https://docs.conan.io/en/latest/reference/conanfile/tools/layout.html) and"
-                        " the new helper (see https://docs.conan.io/en/latest/reference/conanfile/tools/files/patches.html#conan-tools-files-apply-conandata-patches)"
                     )
 
 
